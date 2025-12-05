@@ -1,20 +1,20 @@
 #!/bin/bash
-
 set -e
 
-echo "Script Bash iniciado"
+echo "Script bash iniciado"
 
-echo "La variable CUSTOM_VAR es: $CUSTOM_VAR"
+# Variable de entorno de ejemplo
+echo "Variable CUSTOM_VAR: $CUSTOM_VAR"
 
-echo "Este es un archivo generado por el script.sh" > output.txt
+# Crear archivo
+echo "Archivo creado desde script.sh" > output.txt
 
+# Cambiar permisos
 chmod 644 output.txt
-echo "Permisos de output.txt cambiados a 644"
+echo "Permisos de output.txt modificados a 644"
 
+# Proceso en background
 sleep 10 &
-echo "Proceso en segundo plano creado con PID $!"
+echo "Proceso en background creado con PID $!"
 
-# Simular error para probar manejo (descomenta para probar)
-/# false
-
-echo "Script Bash finalizado con éxito"
+echo "Script bash finalizado"
