@@ -1,0 +1,56 @@
+name: System Automation Workflow
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  CUSTOM_VAR: "Este es un valor secreto visible como variable de entorno"
+
+jobs:
+  run-bash-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Ejecutar script bash
+        run: |
+          chmod +x ./scripts/script.sh
+          ./scripts/script.sh
+        env:
+          CUSTOM_VAR: ${{ secrets.CUSTOM_VAR }}
+
+      - name: Mostrar archivo generado
+        run: cat output.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: output-bash
+          path: output.txt
+
+  run-powershell-script:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Ejecutar script PowerShell
+        shell: pwsh
+        run: |
+          ./scripts/script.ps1
+        env:
+          CUSTOM_VAR: ${{ secrets.CUSTOM_VAR }}
+
+      - name: Mostrar archivo generado
+        shell: pwsh
+        run: Get-Content output.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: output-powershell
+          path: output.txt
