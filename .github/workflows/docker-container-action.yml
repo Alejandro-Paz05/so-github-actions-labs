@@ -1,0 +1,29 @@
+name: Docker Container Action Workflow
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build_and_run_docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: docker build -t mi-imagen-simple .
+
+      - name: Run Docker container and show output
+        run: docker run --rm mi-imagen-simple
+
+      - name: Run container in background for resource monitoring
+        run: |
+          docker run -d --name contenedor-simple mi-imagen-simple
+          sleep 5
+          echo "Monitoreo de recursos del contenedor:"
+          docker stats contenedor-simple --no-stream
+          docker stop contenedor-simple
