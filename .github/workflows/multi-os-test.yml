@@ -28,19 +28,17 @@ jobs:
           echo "=== Comando Bash ===" >> system-info.txt
           echo "Hola desde Bash en ${{ runner.os }}" >> system-info.txt
 
-     - name: System Info (Windows)
-  if: runner.os == 'Windows'
-  shell: powershell
-  run: |
-    "=== Sistema Operativo ===" | Out-File system-info.txt
-    Get-ComputerInfo | Out-File -Append system-info.txt
-    "=== Arquitectura ===" | Out-File -Append system-info.txt
-    $ENV:PROCESSOR_ARCHITECTURE | Out-File -Append system-info.txt
-    "=== Variables de Entorno ===" | Out-File -Append system-info.txt
-    Get-ChildItem Env: | Out-File -Append system-info.txt
-    "=== PowerShell Command ===" | Out-File -Append system-info.txt
-    "Hola desde PowerShell en Windows" | Out-File -Append system-info.txt
-
+      - name: System Info (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          Write-Output "=== Sistema Operativo ===" > system-info.txt
+          systeminfo >> system-info.txt
+          Write-Output "=== Arquitectura ===" >> system-info.txt
+          wmic os get osarchitecture >> system-info.txt
+          Write-Output "=== Variables de Entorno ===" >> system-info.txt
+          Get-ChildItem Env: >> system-info.txt
+          Write-Output "=== PowerShell Command ===" >> system-info.txt
+          Write-Output "Hola desde PowerShell en Windows" >> system-info.txt
 
       - name: Upload System Info
         uses: actions/upload-artifact@v4
